@@ -13,6 +13,25 @@ const resolvers = {
       const token = signToken(newUser);
       
       return { token, newUser };
+    },
+    login: async (parent, { email, password }) => {
+      // Attempt to find the user by email
+      const user = await User.findOne({ email });
+
+      if (!user) {
+        throw new AuthenticationError('No user with this email found!');
+      }
+
+      // Check if the password is correct
+      const correctPw = await user.isCorrectPassword(password);
+
+      if (!correctPw) {
+        throw new AuthenticationError('Incorrect password!');
+      }
+      
+      // Password is correct, sign the token and pass them back
+      const token = signToken(user);
+      return { token, user };
     }
   }
 };
