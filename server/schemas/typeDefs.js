@@ -7,9 +7,19 @@ const typeDefs = gql`
     email: String
     password: String
   }
+  
+  # Set up an Auth type to handle returning data from a profile creating or user login
+  type Auth {
+    token: ID!
+    user: User
+  }
 
   type Query {
-    users: [User]
+    users: [User]!
+  }
+  
+  type Mutation {
+    addUser(username: String!, email: String!, password: String!): Auth
   }
 `;
 
