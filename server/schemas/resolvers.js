@@ -6,7 +6,14 @@ const resolvers = {
   Query: {
     users: async () => {
       return await User.find({});
-    }
+    },
+    me: async (parent, args, context) => {
+      if (context.user) {
+        return User.findOne({ _id: context.user._id });
+      }
+      
+      throw new AuthenticationError('You need to be logged in!');
+    },
   },
   Mutation: {
     addUser: async (parent, { username, email, password }) => {
