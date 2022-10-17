@@ -24,6 +24,17 @@ const typeDefs = gql`
     token: ID!
     user: User
   }
+  
+  # Makes it easier when saving a book
+  # https://graphql.org/graphql-js/mutations-and-input-types/
+  input BookInput {
+    bookId: String
+    title: String
+    description: String
+    authors: [String]
+    image: String
+    link: String
+  }
 
   type Query {
     users: [User]!
@@ -32,6 +43,8 @@ const typeDefs = gql`
   type Mutation {
     addUser(username: String!, email: String!, password: String!): Auth
     login(email: String!, password: String!): Auth
+    saveBook(input: BookInput!): User
+    deleteBook(bookID: ID!): User
   }
 `;
 
